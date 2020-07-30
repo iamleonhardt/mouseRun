@@ -12,6 +12,14 @@ window.addEventListener("resize", () => {
   canvas.height = window.innerHeight;
 });
 
+window.addEventListener("keydown", (e) => {
+  socket.emit("keydown", e.keyCode);
+});
+
+window.addEventListener("keyup", (e) => {
+  socket.emit("keyup", e.keyCode);
+});
+
 socket.on("message", (message) => {
   console.log(message);
 });

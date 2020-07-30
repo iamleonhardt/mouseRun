@@ -1,6 +1,8 @@
 const favicon = require("serve-favicon");
 const utils = require("./lib/utils");
 const Player = require("./server/Player");
+const Cat = require("./server/Cat");
+const Mouse = require("./server/Mouse");
 
 // Setup Express
 const express = require("express");
@@ -25,6 +27,9 @@ const io = require("socket.io")(http);
 let currentSockets = {};
 let currentPlayers = {};
 
+let currentCats = 0;
+let maxCats = 1;
+
 // Socket Connection
 io.sockets.on("connection", (socket) => {
   // Log connection
@@ -33,27 +38,67 @@ io.sockets.on("connection", (socket) => {
   // Create ID and push to currentSocket and currentPlayer
   socket.socketID = Math.random();
   currentSockets[socket.socketID] = socket;
-  currentPlayers[socket.socketID] = new Player(
-    utils.getRanNum(0, 400),
-    utils.getRanNum(0, 400),
-    utils.getRanNum(8, 24),
-    utils.getRanColor()
-  );
+  if (currentCats < maxCats) {
+    currentPlayers[socket.socketID] = new Cat(
+      utils.getRanNum(0, 400),
+      utils.getRanNum(0, 400),
+      "cat"
+    );
+    currentCats++;
+  } else {
+    currentPlayers[socket.socketID] = new Mouse(
+      utils.getRanNum(0, 400),
+      utils.getRanNum(0, 400),
+      "mouse"
+    );
+  }
 
   // Socket Disconnect
   socket.on("disconnect", () => {
     console.log("Socket disconnected: ", socket.socketID);
+    if (currentPlayers[socket.socketID].type == "cat") {
+      currentCats--;
+    }
     delete currentPlayers[socket.socketID];
     delete currentSockets[socket.socketID];
   });
 
-  // Heartbeat to send updates to clients
-  setInterval(() => {
-    Object.keys(currentPlayers).forEach((playerId) => {
-      let player = currentPlayers[playerId];
-      player.x++;
-      player.y++;
-    });
-    socket.emit("update", currentPlayers);
-  }, 1000 / 30);
+  socket.on("keydown", (keyCode) => {
+    if (keyCode == 65) {
+      currentPlayers[socket.socketID].movingLeft = true;
+    }
+    if (keyCode == 68) {
+      currentPlayers[socket.socketID].movingRight = true;
+    }
+    if (keyCode == 87) {
+      currentPlayers[socket.socketID].movingUp = true;
+    }
+    if (keyCode == 83) {
+      currentPlayers[socket.socketID].movingDown = true;
+    }
+  });
+
+  socket.on("keyup", (keyCode) => {
+    if (keyCode == 65) {
+      currentPlayers[socket.socketID].movingLeft = false;
+    }
+    if (keyCode == 68) {
+      currentPlayers[socket.socketID].movingRight = false;
+    }
+    if (keyCode == 87) {
+      currentPlayers[socket.socketID].movingUp = false;
+    }
+    if (keyCode == 83) {
+      currentPlayers[socket.socketID].movingDown = false;
+    }
+  });
 });
+
+// Heartbeat to send updates to clients
+setInterval(() => {
+  Object.keys(currentPlayers).forEach((playerId) => {
+    let player = currentPlayers[playerId];
+    player.updatePosition();
+    currentSockets[playerId].emit("update", currentPlayers);
+  });
+}, 1000 / 60);

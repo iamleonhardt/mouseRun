@@ -1,10 +1,28 @@
 class Player {
-  constructor(x, y, radius, color) {
+  constructor(x, y, type) {
     this.x = x;
     this.y = y;
-    this.radius = radius;
-    this.color = color;
+    this.type = type;
+    this.movingUp = false;
+    this.movingDown = false;
+    this.movingLeft = false;
+    this.movingRight = false;
+    this.speed = 5;
   }
+  updatePosition = () => {
+    if (this.movingRight) {
+      this.x += this.speed;
+    }
+    if (this.movingLeft) {
+      this.x -= this.speed;
+    }
+    if (this.movingUp) {
+      this.y -= this.speed;
+    }
+    if (this.movingDown) {
+      this.y += this.speed;
+    }
+  };
 }
 
 module.exports = Player;
