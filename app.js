@@ -38,6 +38,7 @@ io.sockets.on("connection", (socket) => {
   // Create ID and push to currentSocket and currentPlayer
   socket.socketID = Math.random();
   currentSockets[socket.socketID] = socket;
+  // Create cats before creating mice
   if (currentCats < maxCats) {
     currentPlayers[socket.socketID] = new Cat(
       utils.getRanNum(0, 400),
@@ -56,6 +57,8 @@ io.sockets.on("connection", (socket) => {
   // Socket Disconnect
   socket.on("disconnect", () => {
     console.log("Socket disconnected: ", socket.socketID);
+
+    // When disconnecting check if its a cat
     if (currentPlayers[socket.socketID].type == "cat") {
       currentCats--;
     }
@@ -63,32 +66,33 @@ io.sockets.on("connection", (socket) => {
     delete currentSockets[socket.socketID];
   });
 
+  // Player key inputs
   socket.on("keydown", (keyCode) => {
-    if (keyCode == 65) {
+    if (keyCode == 65 || keyCode == 37) {
       currentPlayers[socket.socketID].movingLeft = true;
     }
-    if (keyCode == 68) {
+    if (keyCode == 68 || keyCode == 39) {
       currentPlayers[socket.socketID].movingRight = true;
     }
-    if (keyCode == 87) {
+    if (keyCode == 87 || keyCode == 38) {
       currentPlayers[socket.socketID].movingUp = true;
     }
-    if (keyCode == 83) {
+    if (keyCode == 83 || keyCode == 40) {
       currentPlayers[socket.socketID].movingDown = true;
     }
   });
 
   socket.on("keyup", (keyCode) => {
-    if (keyCode == 65) {
+    if (keyCode == 65 || keyCode == 37) {
       currentPlayers[socket.socketID].movingLeft = false;
     }
-    if (keyCode == 68) {
+    if (keyCode == 68 || keyCode == 39) {
       currentPlayers[socket.socketID].movingRight = false;
     }
-    if (keyCode == 87) {
+    if (keyCode == 87 || keyCode == 38) {
       currentPlayers[socket.socketID].movingUp = false;
     }
-    if (keyCode == 83) {
+    if (keyCode == 83 || keyCode == 40) {
       currentPlayers[socket.socketID].movingDown = false;
     }
   });
