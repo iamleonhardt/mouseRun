@@ -39,9 +39,9 @@ socket.on("update", (players) => {
   });
 });
 
+// Draw map
 let grassFields = new Image();
 grassFields.src = "/client/images/grassField.png";
-
 let drawMap = () => {
-  c.drawImage(grassFields, 0, 0, window.innerWidth, window.innerHeight);
+  c.drawImage(grassFields, 0, 0, 1920, 1080);
 };

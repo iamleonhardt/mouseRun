@@ -2,13 +2,15 @@ class Player {
   constructor(x, y, type) {
     this.x = x;
     this.y = y;
-    this.type = type;
+    this.type = type; // Cat or Mouse
+    // Movement
+    this.speed = 5;
     this.movingUp = false;
     this.movingDown = false;
     this.movingLeft = false;
     this.movingRight = false;
-    this.speed = 5;
   }
+
   updatePosition = () => {
     if (this.movingRight) {
       this.x += this.speed;
