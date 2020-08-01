@@ -1,8 +1,9 @@
 class Player {
-  constructor(x, y, type) {
+  constructor(x, y, type, name) {
     this.x = x;
     this.y = y;
     this.type = type; // Cat or Mouse
+    this.name = name;
     // Movement
     this.speed = 5;
     this.movingUp = false;

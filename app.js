@@ -38,21 +38,26 @@ io.sockets.on("connection", (socket) => {
   // Create ID and push to currentSocket and currentPlayer
   socket.socketID = Math.random();
   currentSockets[socket.socketID] = socket;
-  // Create cats before creating mice
-  if (currentCats < maxCats) {
-    currentPlayers[socket.socketID] = new Cat(
-      utils.getRanNum(0, 400),
-      utils.getRanNum(0, 400),
-      "cat"
-    );
-    currentCats++;
-  } else {
-    currentPlayers[socket.socketID] = new Mouse(
-      utils.getRanNum(0, 400),
-      utils.getRanNum(0, 400),
-      "mouse"
-    );
-  }
+
+  socket.on("playerJoined", (name) => {
+    // Create cats before creating mice
+    if (currentCats < maxCats) {
+      currentPlayers[socket.socketID] = new Cat(
+        utils.getRanNum(0, 400),
+        utils.getRanNum(0, 400),
+        "cat",
+        name
+      );
+      currentCats++;
+    } else {
+      currentPlayers[socket.socketID] = new Mouse(
+        utils.getRanNum(0, 400),
+        utils.getRanNum(0, 400),
+        "mouse",
+        name
+      );
+    }
+  });
 
   // Socket Disconnect
   socket.on("disconnect", () => {
@@ -68,41 +73,45 @@ io.sockets.on("connection", (socket) => {
 
   // Player key inputs
   socket.on("keydown", (keyCode) => {
-    if (keyCode == 65 || keyCode == 37) {
-      currentPlayers[socket.socketID].movingLeft = true;
-    }
-    if (keyCode == 68 || keyCode == 39) {
-      currentPlayers[socket.socketID].movingRight = true;
-    }
-    if (keyCode == 87 || keyCode == 38) {
-      currentPlayers[socket.socketID].movingUp = true;
-    }
-    if (keyCode == 83 || keyCode == 40) {
-      currentPlayers[socket.socketID].movingDown = true;
+    if (currentPlayers[socket.socketID]) {
+      if (keyCode == 65 || keyCode == 37) {
+        currentPlayers[socket.socketID].movingLeft = true;
+      }
+      if (keyCode == 68 || keyCode == 39) {
+        currentPlayers[socket.socketID].movingRight = true;
+      }
+      if (keyCode == 87 || keyCode == 38) {
+        currentPlayers[socket.socketID].movingUp = true;
+      }
+      if (keyCode == 83 || keyCode == 40) {
+        currentPlayers[socket.socketID].movingDown = true;
+      }
     }
   });
 
   socket.on("keyup", (keyCode) => {
-    if (keyCode == 65 || keyCode == 37) {
-      currentPlayers[socket.socketID].movingLeft = false;
-    }
-    if (keyCode == 68 || keyCode == 39) {
-      currentPlayers[socket.socketID].movingRight = false;
-    }
-    if (keyCode == 87 || keyCode == 38) {
-      currentPlayers[socket.socketID].movingUp = false;
-    }
-    if (keyCode == 83 || keyCode == 40) {
-      currentPlayers[socket.socketID].movingDown = false;
+    if (currentPlayers[socket.socketID]) {
+      if (keyCode == 65 || keyCode == 37) {
+        currentPlayers[socket.socketID].movingLeft = false;
+      }
+      if (keyCode == 68 || keyCode == 39) {
+        currentPlayers[socket.socketID].movingRight = false;
+      }
+      if (keyCode == 87 || keyCode == 38) {
+        currentPlayers[socket.socketID].movingUp = false;
+      }
+      if (keyCode == 83 || keyCode == 40) {
+        currentPlayers[socket.socketID].movingDown = false;
+      }
     }
   });
 });
 
 // Heartbeat to send updates to clients
 setInterval(() => {
-  Object.keys(currentPlayers).forEach((playerId) => {
+  Object.keys(currentSockets).forEach((playerId) => {
     let player = currentPlayers[playerId];
-    player.updatePosition();
+    player ? player.updatePosition() : null;
     currentSockets[playerId].emit("update", currentPlayers);
   });
 }, 1000 / 60);
