@@ -62,13 +62,14 @@ io.sockets.on("connection", (socket) => {
   // Socket Disconnect
   socket.on("disconnect", () => {
     console.log("Socket disconnected: ", socket.socketID);
-
-    // When disconnecting check if its a cat
-    if (currentPlayers[socket.socketID].type == "cat") {
-      currentCats--;
+    if (currentPlayers[socket.socketID]) {
+      // When disconnecting check if its a cat
+      if (currentPlayers[socket.socketID].type == "cat") {
+        currentCats--;
+      }
+      delete currentPlayers[socket.socketID];
+      delete currentSockets[socket.socketID];
     }
-    delete currentPlayers[socket.socketID];
-    delete currentSockets[socket.socketID];
   });
 
   // Player key inputs

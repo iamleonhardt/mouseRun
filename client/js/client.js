@@ -13,7 +13,9 @@ c.font = "15px sans-serif";
 
 let joinGame = () => {
   socket.emit("playerJoined", "Joe");
+  signInDiv.style.display = "none";
 };
+let signInDiv = document.getElementById("signIn");
 let joinBtn = document.getElementById("joinBtn");
 joinBtn.addEventListener("click", joinGame);
 
