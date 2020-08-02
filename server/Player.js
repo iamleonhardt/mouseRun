@@ -5,7 +5,7 @@ class Player {
     this.type = type; // Cat or Mouse
     this.name = name;
     // Movement
-    this.speed = 5;
+    this.speed = 8;
     this.movingUp = false;
     this.movingDown = false;
     this.movingLeft = false;
