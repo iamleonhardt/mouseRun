@@ -10,7 +10,6 @@ canvas.height = window.innerHeight;
 c.font = "15px sans-serif";
 
 // Join Game
-
 let joinGame = () => {
   socket.emit("playerJoined", "Joe");
   signInDiv.style.display = "none";
