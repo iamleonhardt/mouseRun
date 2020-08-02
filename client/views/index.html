@@ -13,9 +13,41 @@
       canvas {
         background-color: linen;
       }
+      #signIn {
+        height: 80px;
+        width: 200px;
+        background-color: linen;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 4px;
+        color: #777;
+        font-size: 18px;
+        font-family: roboto, arial, sans-serif;
+        text-align: center;
+        line-height: 32px;
+      }
+      #joinBtn {
+        height: 32px;
+        width: 160px;
+        background-color: coral;
+        color: #fff;
+
+        position: relative;
+        /* top: 50%; */
+        left: 50%;
+        transform: translate(-50%);
+
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body>
+    <div id="signIn">
+      Sign In
+      <div id="joinBtn">Join</div>
+    </div>
     <canvas id="canvas"></canvas>
   </body>
   <script src="/client/js/client.js"></script>
