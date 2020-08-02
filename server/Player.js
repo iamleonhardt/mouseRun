@@ -11,6 +11,9 @@ class Player {
     this.movingLeft = false;
     this.movingRight = false;
   }
+  update = () => {
+    this.updatePosition();
+  };
 
   updatePosition = () => {
     if (this.movingRight) {
@@ -24,6 +27,15 @@ class Player {
     }
     if (this.movingDown) {
       this.y += this.speed;
+    }
+  };
+  //Check collision
+  checkCollision = (entity) => {
+    //if the distance between the two entities minus their radius <= 0 then return colliding
+    if (getDistance(this, entity) < 0) {
+      return true;
+    } else {
+      return false;
     }
   };
 }

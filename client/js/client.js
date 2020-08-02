@@ -28,19 +28,16 @@ let mousePressed = false;
 
 canvas.addEventListener("mousedown", () => {
   mousePressed = true;
-  console.log("mousePressed: ", mousePressed);
 });
 
 canvas.addEventListener("mouseup", () => {
   mousePressed = false;
-  console.log("mousePressed: ", mousePressed);
 });
 
 // Track mouse position on move
 canvas.addEventListener("mousemove", (event) => {
   mousePosition.x = event.offsetX || event.layerX;
   mousePosition.y = event.offsetY || event.layerY;
-  console.log("x: ", mousePosition.x + ", y: ", mousePosition.y);
 });
 
 // Resize Canvas when browser resizes

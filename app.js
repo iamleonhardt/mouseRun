@@ -108,11 +108,33 @@ io.sockets.on("connection", (socket) => {
   });
 });
 
+//Get distances
+let getDistance = (entity1, entity2) => {
+  let distance =
+    Math.floor(
+      Math.sqrt(
+        Math.pow(entity1.x - entity2.x, 2) + Math.pow(entity1.y - entity2.y, 2)
+      )
+    ) -
+    (entity1.radius + entity2.radius);
+  return distance;
+};
+
+// //Check collision
+// let checkCollision = (entity1, entity2) => {
+//   //if the distance between the two entities minus their radius <= 0 then return colliding
+//   if (getDistance(entity1, entity2) < 0) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
+
 // Heartbeat to send updates to clients
 setInterval(() => {
   Object.keys(currentSockets).forEach((playerId) => {
     let player = currentPlayers[playerId];
-    player ? player.updatePosition() : null;
+    player ? player.update() : null;
     currentSockets[playerId].emit("update", currentPlayers);
   });
 }, 1000 / 60);
