@@ -59,16 +59,24 @@ class Game {
 
   keyDown = (uid, keyCode) => {
     if (this.players[uid]) {
+      // a || left arrow
       if (keyCode == 65 || keyCode == 37) {
+        this.players[uid].movingRight = false;
         this.players[uid].movingLeft = true;
       }
+      // d || right arrow
       if (keyCode == 68 || keyCode == 39) {
+        this.players[uid].movingLeft = false;
         this.players[uid].movingRight = true;
       }
+      // w || up arrow
       if (keyCode == 87 || keyCode == 38) {
+        this.players[uid].movingDown = false;
         this.players[uid].movingUp = true;
       }
+      // s || down arrow
       if (keyCode == 83 || keyCode == 40) {
+        this.players[uid].movingUp = false;
         this.players[uid].movingDown = true;
       }
     }
@@ -76,15 +84,19 @@ class Game {
 
   keyUp = (uid, keyCode) => {
     if (this.players[uid]) {
+      // a || left arrow
       if (keyCode == 65 || keyCode == 37) {
         this.players[uid].movingLeft = false;
       }
+      // d || right arrow
       if (keyCode == 68 || keyCode == 39) {
         this.players[uid].movingRight = false;
       }
+      // w || up arrow
       if (keyCode == 87 || keyCode == 38) {
         this.players[uid].movingUp = false;
       }
+      // s || down arrow
       if (keyCode == 83 || keyCode == 40) {
         this.players[uid].movingDown = false;
       }
