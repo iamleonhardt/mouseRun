@@ -103,6 +103,22 @@ class Game {
     }
   };
 
+  checkAllcollisions = () => {
+    let playerArr = Object.keys(this.players);
+    playerArr.forEach((self, i) => {
+      playerArr.forEach((obj2, j) => {
+        j > i
+          ? utils.checkCollision(
+              self,
+              this.players[self],
+              obj2,
+              this.players[obj2]
+            )
+          : null;
+      });
+    });
+  };
+
   logPlayers = () => {
     // console.log("Players: ", this.players);
     console.log("Players keys: ", Object.keys(this.players));
