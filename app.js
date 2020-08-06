@@ -54,5 +54,6 @@ setInterval(() => {
     player ? player.update() : null;
     game.sockets[uid].emit("update", game.players);
   });
+
   game.checkAllcollisions();
 }, 1000 / 60);
