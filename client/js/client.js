@@ -11,7 +11,7 @@ c.font = "15px sans-serif";
 
 // Join Game
 let joinGame = () => {
-  socket.emit("playerJoined", "Joe");
+  socket.emit("addPlayer", "Joe");
   signInDiv.style.display = "none";
 };
 let signInDiv = document.getElementById("signIn");
